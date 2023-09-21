@@ -50,9 +50,14 @@
     });
     function lockLandscapeOrientation() {
       if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock("landscape");
+        screen.orientation.lock("landscape").catch(function(error) {
+          console.error("Could not lock screen orientation: ", error);
+        });
       }
     }
+
+window.addEventListener("DOMContentLoaded", lockLandscapeOrientation);
+
 
     window.addEventListener("DOMContentLoaded", lockLandscapeOrientation);
     function random(min, max) {
