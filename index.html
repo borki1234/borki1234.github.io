@@ -32,37 +32,19 @@
   <script>
     const canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
+    window.addEventListener("devicemotion", (e) => {
+        const accelerationX = e.accelerationIncludingGravity.x;
+        const accelerationY = e.accelerationIncludingGravity.y;
 
-    let touchX, touchY; // Store touch coordinates
+        // You can adjust the sensitivity of motion control by multiplying the accelerations
+        const sensitivity = 0.5;
+        pacman.x += accelerationX * sensitivity;
+        pacman.y += accelerationY * sensitivity;
 
-    canvas.addEventListener("touchstart", (e) => {
-      e.preventDefault(); // Prevent default touch behavior (e.g., scrolling)
-      const touch = e.touches[0];
-      touchX = touch.clientX;
-      touchY = touch.clientY;
+        // Ensure Pacman stays within the canvas bounds
+        pacman.x = Math.max(pacman.size, Math.min(pacman.x, width - pacman.size));
+        pacman.y = Math.max(pacman.size, Math.min(pacman.y, height - pacman.size));
     });
-
-    canvas.addEventListener("touchmove", (e) => {
-      e.preventDefault(); // Prevent default touch behavior (e.g., scrolling)
-      const touch = e.touches[0];
-      const deltaX = touch.clientX - touchX;
-      const deltaY = touch.clientY - touchY;
-      touchX = touch.clientX;
-      touchY = touch.clientY;
-
-      // Adjust Pacman's position based on touch movement
-      pacman.x += deltaX;
-      pacman.y += deltaY;
-
-      // Ensure Pacman stays within the canvas bounds
-      pacman.x = Math.max(pacman.size, Math.min(pacman.x, width - pacman.size));
-      pacman.y = Math.max(pacman.size, Math.min(pacman.y, height - pacman.size));
-    });
-
-    canvas.addEventListener("touchend", (e) => {
-      // Handle touch end event if needed
-    });
-
     function random(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
