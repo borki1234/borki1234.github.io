@@ -241,6 +241,7 @@
             // Pacman is powered up, so eat the ghost
             const ghostIndex = ghosts.indexOf(ghost);
             if (ghostIndex !== -1) {
+              startVibrate(100);
               ghosts.splice(ghostIndex, 1);
             }
           } else if (!this.poweredUp && distance < this.size + ghost.size) {
