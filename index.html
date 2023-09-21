@@ -50,13 +50,15 @@
     });
     function lockLandscapeOrientation() {
       if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock("landscape").catch(function(error) {
+        // Lock the screen orientation to landscape-primary
+        screen.orientation.lock("landscape-primary").catch(function(error) {
           console.error("Could not lock screen orientation: ", error);
         });
       }
     }
 
-window.addEventListener("DOMContentLoaded", lockLandscapeOrientation);
+    window.addEventListener("DOMContentLoaded", lockLandscapeOrientation);
+
 
 
     window.addEventListener("DOMContentLoaded", lockLandscapeOrientation);
