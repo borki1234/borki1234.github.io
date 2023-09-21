@@ -20,24 +20,13 @@
       max-width: 100%;
       max-height: 100%;
     }
-    #landscapePrompt {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      font-size: 24px;
-      color: white;
-      display: none;
-    }
+
   </style>
 </head>
 
 <body>
   <!-- Add this HTML code inside the body element -->
-  <div id="landscapePrompt">
-    Please rotate your device to landscape mode to start the game.
-  </div>
+
   <div id="victory-text" style="display: none;">You Win!</div>
   <div id="life-count" style="color: white;">Lives: 3</div>
   <canvas id="canvas" width="500" height="500"></canvas>
@@ -59,13 +48,13 @@
         pacman.x = Math.max(pacman.size, Math.min(pacman.x, width - pacman.size));
         pacman.y = Math.max(pacman.size, Math.min(pacman.y, height - pacman.size));
     });
-    window.addEventListener("DOMContentLoaded", () => {
-      const initialOrientation = window.screen.orientation.type;
-      if (initialOrientation !== "landscape-primary" && initialOrientation !== "landscape-secondary") {
-        const landscapePrompt = document.getElementById("landscapePrompt");
-        landscapePrompt.style.display = "block";
+    function lockLandscapeOrientation() {
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("landscape");
       }
-    });
+    }
+
+    window.addEventListener("DOMContentLoaded", lockLandscapeOrientation);
     function random(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
