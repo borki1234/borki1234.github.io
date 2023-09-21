@@ -238,7 +238,7 @@
           const dx = this.x - ghost.x;
           const dy = this.y - ghost.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          startVibrate(100);
+          startVibrate(1);
           if (this.poweredUp && distance < this.size + ghost.size) {
             // Pacman is powered up, so eat the ghost
             const ghostIndex = ghosts.indexOf(ghost);
