@@ -37,19 +37,43 @@
     const ctx = canvas.getContext("2d");
     var myScreenOrientation = window.screen.orientation;
 
-    window.addEventListener("devicemotion", (e) => {
-        const accelerationX = e.accelerationIncludingGravity.x;
-        const accelerationY = e.accelerationIncludingGravity.y;
+// Add these variables for orientation tracking
+let currentOrientation = "portrait-primary";
 
-        // You can adjust the sensitivity of motion control by multiplying the accelerations
-        const sensitivity = 0.5;
+window.addEventListener("devicemotion", (e) => {
+    const accelerationX = e.accelerationIncludingGravity.x;
+    const accelerationY = e.accelerationIncludingGravity.y;
+
+    // Calculate the angle of the device's tilt
+    const angle = Math.atan2(accelerationY, accelerationX);
+    
+    // Define a sensitivity factor
+    const sensitivity = 0.5;
+
+    // Adjust Pac-Man's position based on the device's orientation
+    if (currentOrientation === "portrait-primary" || currentOrientation === "portrait-secondary") {
+        // Portrait mode
         pacman.x += accelerationX * sensitivity;
         pacman.y += accelerationY * sensitivity;
+    } else {
+        // Landscape mode
+        pacman.x += accelerationY * sensitivity;
+        pacman.y -= accelerationX * sensitivity;
+    }
 
-        // Ensure Pacman stays within the canvas bounds
-        pacman.x = Math.max(pacman.size, Math.min(pacman.x, width - pacman.size));
-        pacman.y = Math.max(pacman.size, Math.min(pacman.y, height - pacman.size));
-    });
+    // Ensure Pac-Man stays within the canvas bounds
+    pacman.x = Math.max(pacman.size, Math.min(pacman.x, width - pacman.size));
+    pacman.y = Math.max(pacman.size, Math.min(pacman.y, height - pacman.size));
+});
+
+// Add an event listener to track screen orientation changes
+window.screen.orientation.onchange = () => {
+    currentOrientation = window.screen.orientation.type;
+};
+
+// Add an initial orientation check
+currentOrientation = window.screen.orientation.type;
+
 
     function toggleFullScreen() {
       console.log(document.fullscreenElement); // Use document.fullscreenElement with a lowercase 'd'
