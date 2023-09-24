@@ -35,6 +35,39 @@
   <script>
     const canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
+
+    let motionPermission = false;
+
+    // Request motion permissions when the page loads
+    window.addEventListener("DOMContentLoaded", () => {
+      if (DeviceMotionEvent.requestPermission) {
+        DeviceMotionEvent.requestPermission()
+          .then(permissionState => {
+            if (permissionState === "granted") {
+              motionPermission = true;
+              lockLandscapeOrientation();
+            } else {
+              console.error("Motion permissions denied.");
+            }
+          })
+          .catch(error => {
+            console.error("Could not request motion permissions: ", error);
+          });
+      }
+    });
+
+    function lockLandscapeOrientation() {
+      if (motionPermission && window.orientation !== undefined) {
+        if (window.orientation === 90 || window.orientation === -90) {
+          // Lock the screen orientation to landscape-primary or landscape-secondary
+          screen.orientation.lock("landscape").catch(function (error) {
+            console.error("Could not lock screen orientation: ", error);
+          });
+        }
+      }
+    }
+    window.addEventListener("DOMContentLoaded", lockLandscapeOrientation);
+
     window.addEventListener("devicemotion", (e) => {
         const accelerationX = e.accelerationIncludingGravity.x;
         const accelerationY = e.accelerationIncludingGravity.y;
@@ -48,20 +81,10 @@
         pacman.x = Math.max(pacman.size, Math.min(pacman.x, width - pacman.size));
         pacman.y = Math.max(pacman.size, Math.min(pacman.y, height - pacman.size));
     });
-    function lockLandscapeOrientation() {
-      if (screen.orientation && screen.orientation.lock) {
-        // Lock the screen orientation to landscape-primary
-        screen.orientation.lock("landscape-primary").catch(function(error) {
-          console.error("Could not lock screen orientation: ", error);
-        });
-      }
-    }
-
-    window.addEventListener("DOMContentLoaded", lockLandscapeOrientation);
 
 
 
-    window.addEventListener("DOMContentLoaded", lockLandscapeOrientation);
+
     function random(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
