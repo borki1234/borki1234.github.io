@@ -52,29 +52,29 @@
     });
     
     function lockLandscapeOrientation() {
-  if ('screen' in window && 'orientation' in window.screen) {
-    // Check if screen.orientation.lock is supported
-    if (screen.orientation.lock) {
-      // Lock the screen orientation to landscape-primary
-      screen.orientation.lock('landscape-primary').then(() => {
-        console.log('Screen orientation locked to landscape-primary');
-      }).catch((error) => {
-        console.error('Could not lock screen orientation: ', error);
-      });
-    }
-  }
-}
+            if ('screen' in window && 'orientation' in window.screen) {
+                // Check if screen.orientation.lock is supported
+                if (screen.orientation.lock) {
+                    // Lock the screen orientation to landscape-primary
+                    screen.orientation.lock('landscape-primary').then(() => {
+                        console.log('Screen orientation locked to landscape-primary');
+                    }).catch((error) => {
+                        console.error('Could not lock screen orientation: ', error);
+                    });
+                }
+            }
+        }
 
-// Call the lockLandscapeOrientation function to lock the orientation initially
-lockLandscapeOrientation();
+        // Call the lockLandscapeOrientation function to lock the orientation initially
+        lockLandscapeOrientation();
 
-// Add an event listener for screen orientation changes
-window.screen.orientation.onchange = () => {
-  if (window.screen.orientation.type !== 'landscape-primary') {
-    // If the orientation changes, attempt to lock it back to landscape
-    lockLandscapeOrientation();
-  }
-};
+        // Add an event listener for screen orientation changes
+        window.screen.orientation.onchange = () => {
+            if (window.screen.orientation.type !== 'landscape-primary') {
+                // If the orientation changes, attempt to lock it back to landscape
+                lockLandscapeOrientation();
+            }
+        };
 
 
 
