@@ -48,7 +48,7 @@ window.addEventListener("devicemotion", (e) => {
     const angle = Math.atan2(accelerationY, accelerationX);
     
     // Define a sensitivity factor
-    const sensitivity = 0.5;
+    const sensitivity = 1;
 
     // Adjust Pac-Man's position based on the device's orientation
     if (currentOrientation === "portrait-primary" || currentOrientation === "portrait-secondary") {
