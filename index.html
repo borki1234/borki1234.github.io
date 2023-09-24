@@ -31,6 +31,11 @@
   <div id="life-count" style="color: white;">Lives: 3</div>
   <canvas id="canvas" width="500" height="500"></canvas>
   <button id = 'fullScreenButton'>Toggle Fullscren</button>
+  <h1>LOCK LANDSCAPE</h1>
+  <input type="button" value="Landscape" onclick="lock('landscape')">
+  <input type="button" value="Landscape Primary" onclick="lock('landscape-primary')">
+  <input type="button" value="Landscape Secondary" onclick="lock('landscape-secondary')">
+
 
   <script>
     const canvas = document.querySelector("canvas");
@@ -51,21 +56,24 @@
         pacman.y = Math.max(pacman.size, Math.min(pacman.y, height - pacman.size));
     });
 
+  /*
     function lockLandscapeOrientation() {
-      /*
+      
       if (screen.orientation && screen.orientation.lock) {
         // Lock the screen orientation to landscape-primary
         screen.orientation.lock("landscape-primary").catch(function(error) {
           console.error("Could not lock screen orientation: ", error);
         });
       }
-      */
+      
      myScreenOrientation.lock("landscape'primary");
     }
 
     window.addEventListener("DOMContentLoaded", lockLandscapeOrientation);
-
-
+  */ 
+    function lock(orientation){
+      screen.orientation.lock(orientation);
+    }
 
     function random(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
