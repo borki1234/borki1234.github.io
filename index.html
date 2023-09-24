@@ -30,7 +30,7 @@
   <div id="victory-text" style="display: none;">You Win!</div>
   <div id="life-count" style="color: white;">Lives: 3</div>
   <canvas id="canvas" width="500" height="500"></canvas>
-  <button id = 'fullScreenButton'>Toggle Fullscren</button>
+  <button id="fullScreenButton">Toggle Fullscreen</button>
 
   <script>
     const canvas = document.querySelector("canvas");
@@ -50,34 +50,37 @@
         pacman.x = Math.max(pacman.size, Math.min(pacman.x, width - pacman.size));
         pacman.y = Math.max(pacman.size, Math.min(pacman.y, height - pacman.size));
     });
-    
+
+    function toggleFullScreen() {
+      console.log(document.fullscreenElement); // Use document.fullscreenElement with a lowercase 'd'
+      if (!document.fullscreenElement) {
+        canvas.requestFullscreen().then(() => {
+          lockLandscapeOrientation(); // Lock orientation when entering fullscreen
+        }).catch();
+      }
+    }
+
     function lockLandscapeOrientation() {
-            if ('screen' in window && 'orientation' in window.screen) {
-                // Check if screen.orientation.lock is supported
-                if (screen.orientation.lock) {
-                    // Lock the screen orientation to landscape-primary
-                    screen.orientation.lock('landscape-primary').then(() => {
-                        console.log('Screen orientation locked to landscape-primary');
-                    }).catch((error) => {
-                        console.error('Could not lock screen orientation: ', error);
-                    });
-                }
-            }
+      if ('screen' in window && 'orientation' in window.screen) {
+        // Check if screen.orientation.lock is supported
+        if (screen.orientation.lock) {
+          // Lock the screen orientation to landscape-primary
+          screen.orientation.lock('landscape-primary').then(() => {
+            console.log('Screen orientation locked to landscape-primary');
+          }).catch((error) => {
+            console.error('Could not lock screen orientation: ', error);
+          });
         }
+      }
+    }
 
-        // Call the lockLandscapeOrientation function to lock the orientation initially
+    // Add an event listener for screen orientation changes
+    window.screen.orientation.onchange = () => {
+      if (window.screen.orientation.type !== 'landscape-primary') {
+        // If the orientation changes, attempt to lock it back to landscape
         lockLandscapeOrientation();
-
-        // Add an event listener for screen orientation changes
-        window.screen.orientation.onchange = () => {
-            if (window.screen.orientation.type !== 'landscape-primary') {
-                // If the orientation changes, attempt to lock it back to landscape
-                lockLandscapeOrientation();
-            }
-        };
-
-
-
+      }
+    }
 
     function random(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -103,14 +106,16 @@
 
     function toggleFullScreen() {
       console.log(document.fullscreenElement); // Use document.fullscreenElement with a lowercase 'd'
-      if (!document.fullscreenElement) { // Corrected the condition
-        canvas.requestFullscreen().then().catch();
+      if (!document.fullscreenElement) {
+        canvas.requestFullscreen().then(() => {
+          lockLandscapeOrientation(); // Lock orientation when entering fullscreen
+        }).catch();
       }
     }
 
     let vibrateInterval;
 
-    // Starts vibration at passed in level
+    // Starts vibration at the passed-in level
     function startVibrate(duration) {
       navigator.vibrate(duration);
     }
@@ -121,7 +126,6 @@
       if (vibrateInterval) clearInterval(vibrateInterval);
       navigator.vibrate(0);
     }
-
 
     window.addEventListener('resize', resizeCanvas);
 
